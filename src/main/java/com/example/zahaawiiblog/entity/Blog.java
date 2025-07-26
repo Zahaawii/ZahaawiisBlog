@@ -1,10 +1,7 @@
-package com.example.zahaawiiblog.Entity;
+package com.example.zahaawiiblog.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Date;
 
@@ -34,4 +31,15 @@ public class Blog {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Override
+    public String toString() {
+        return "Blog{" +
+                "blogId=" + blogId +
+                ", subject='" + subject + '\'' +
+                ", body='" + body + '\'' +
+                ", category='" + category + '\'' +
+                ", publishDate=" + publishDate +
+                ", user=" + user +
+                '}';
+    }
 }

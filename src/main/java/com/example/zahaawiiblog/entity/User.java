@@ -1,4 +1,4 @@
-package com.example.zahaawiiblog.Entity;
+package com.example.zahaawiiblog.entity;
 
 
 import jakarta.persistence.*;
@@ -18,7 +18,7 @@ import java.sql.Date;
 public class User {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long userId;
 
     private String name;
@@ -28,4 +28,15 @@ public class User {
     private String password;
 
     private Date createdDate;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", createdDate=" + createdDate +
+                '}';
+    }
 }
