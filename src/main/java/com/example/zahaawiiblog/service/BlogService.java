@@ -28,4 +28,8 @@ public class BlogService {
         return (List<Blog>) blogRepository.findAll();
     }
 
+    public void removeBlogPost(long deleteId) {
+        blogRepository.deleteById(deleteId);
+    }
+
 }

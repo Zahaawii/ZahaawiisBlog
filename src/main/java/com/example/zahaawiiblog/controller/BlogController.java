@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("/api/blog")
 @RestController
 public class BlogController {
 
@@ -23,23 +24,30 @@ public class BlogController {
         this.userService = userService;
     }
 
-    @GetMapping("/api/getById/{id}")
+    @GetMapping("/getbyid/{id}")
     public ResponseEntity<List<Blog>> getAll(@PathVariable int id) {
         List<Blog> findAllBlogPost = blogService.findAllByBlogId(id);
         System.out.println(findAllBlogPost);
         return new ResponseEntity<>(findAllBlogPost, HttpStatus.OK);
     }
 
-    @GetMapping("/api/getAllBlogPost")
+    @GetMapping("/getallblogpost")
     public ResponseEntity<List<Blog>> getAll() {
         return new ResponseEntity<>(blogService.getAllBlogs(), HttpStatus.OK);
     }
 
-    @PostMapping("/api/saveBlogPost")
+    @DeleteMapping("/deletepost/{id}")
+    public ResponseEntity<?> removeBlog(@PathVariable int id) {
+        if(blogService.findAllByBlogId(id).isEmpty()) {
+            return new ResponseEntity<>("Blog post does not exsist", HttpStatus.BAD_REQUEST);
+        }
+        blogService.removeBlogPost(id);
+        return new ResponseEntity<>("Blog post with id " + id + " was deleted", HttpStatus.OK);
+    }
+
+    @PostMapping("/saveblogpost")
     public ResponseEntity<?> addBlog(@RequestBody Blog newBlogPost) {
         blogService.addNewBlogPost(newBlogPost);
         return new ResponseEntity<>(newBlogPost, HttpStatus.CREATED);
     }
-
-
 }
