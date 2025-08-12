@@ -13,8 +13,8 @@ import java.util.List;
 
 @RequestMapping("/api/blog")
 @RestController
+@CrossOrigin(origins = "*")
 public class BlogController {
-
 
     private final BlogService blogService;
     private final UserService userService;
