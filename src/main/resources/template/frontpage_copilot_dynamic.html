@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frontpage (Dynamic)</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="nav-bar">
+    <ul class="nav-panel">
+        <li><a href="">Logo</a></li>
+        <li><a href="">Contact</a></li>
+        <li><a href="">Profile</a></li>
+        <li><a href="">About me</a></li>
+        <li><a href="loginPage.html">Login</a></li>
+    </ul>
+</div>
+
+<!-- Blog posts will be rendered here -->
+<div id="blog-posts-container"></div>
+
+<script>
+const url = 'http://localhost:8080/api/blog/getallblogpost';
+const container = document.getElementById('blog-posts-container');
+
+function createBlogBox(blog) {
+    return `
+    <div class="blog-section">
+        <div class="blog-box">
+            <div class="blog-user-logo">
+                <p> billede </p>
+            </div>
+            <div class="blog-post-subject">
+                <h2>${blog.subject}</h2>
+                <p>${blog.publishDate}</p>
+                <p>Author: ${blog.user?.name || 'Unknown'}</p>
+            </div>
+            <div class="blog-post-body">
+                <p>${blog.body}</p>
+            </div>
+            <div class="blog-interaction">
+                <div class="blog-likes-section">
+                    <ul>
+                        <li><a href="#" class="interaction">like</a></li>
+                        <li><a href="#" class="interaction">comment</a></li>
+                        <li><a href="#" class="interaction">share</a></li>
+                    </ul>
+                </div>
+                <div class="blog-see-all-comments">
+                    <p>this is a comment</p>
+                    <p>this is a comment</p>
+                    <p>this is a comment</p>
+                </div>
+                <div class="blog-add-comments">
+                    <label>
+                        <input type="text" placeholder="Add a comment here">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+}
+
+fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        container.innerHTML = data.map(createBlogBox).join('');
+    })
+    .catch(err => {
+        container.innerHTML = '<p>Failed to load blog posts.</p>';
+        console.error(err);
+    });
+
+
+</script>
+
+</body>
+</html>

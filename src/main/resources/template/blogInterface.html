@@ -8,21 +8,43 @@
 
 <h1> This will showcase all blogs</h1>
 
-<div class ="test">
+<div class ="">
+    <h1 class ="test"> </h1>
 </div>
 
 <script>
+ /*
+    let markup = "";
     fetch('http://localhost:8080/api/blog/getallblogpost')
         .then(res => {
             return res.json();
         })
         .then(data => {
             data.forEach(blog => {
-                const markup = `${blog.subject}`
+             markup = `${blog.subject}`
 
-                document.querySelector('div').insertAdjacentHTML("beforeend", markup);
+                document.querySelector('.test')
+                    .innerHTML = `${markup}`;
             })
         });
+ */
+
+    function test () {
+    let markup = "";
+    fetch('http://localhost:8080/api/blog/getallblogpost')
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
+            data.forEach(blog => {
+             markup = `${blog.user.name}`
+
+                console.log(markup);
+            })
+        });
+    }
+
+    test();
 
 
 </script>

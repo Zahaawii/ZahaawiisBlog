@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frontpage (Dynamic)</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="nav-bar">
+    <ul class="nav-panel">
+        <li><a href="">Logo</a></li>
+        <li><a href="">Contact</a></li>
+        <li><a href="">Profile</a></li>
+        <li><a href="">About me</a></li>
+        <li><a href="loginPage.html">Login</a></li>
+    </ul>
+</div>
+
+<form id ="createblogpost"> 
+    <div class="add_subject"> 
+        <label for="subject">Subject</label>
+        <input class="js_subject" type="text" name="subject" id="form_subject" placeholder="Add subject">
+    </div>
+
+    <div class ="add_body">
+        <label for ="body">Body</label>
+        <textarea class = `.js_body` id="body" name="body" rows="30" cols="50"></textarea>
+    </div>
+    
+    <div class="add_category">
+        <label for="category">Category</label>
+        <input class="js_category" type="text" name="category" id="form_category" placeholder="Add category">
+    </div>
+    
+    <button type="submit" class="btn" onclick="
+    submitForm()"
+    >Create blog post</button>
+</form>
+
+<script>
+    var date = new Date().toISOString().slice(0,10);
+
+    function sumbitForm() {
+    const getSubject = document.querySelector(`.js_subject`);
+    const getBody = document.querySelector(`.js_body`);
+    const getCategory = document.querySelector(`.js_category`);
+    const getDate = date;
+
+   
+
+    fetch("http://localhost:8080/api/blog/saveblogpost", {
+       method: "POST",
+            body: JSON.stringify({
+                      "subject": `${getSubject}`,
+                      "body": `${getBody}`,
+                      "category": `${getCategory}`,
+                      "publishDate": `${getDate}`
+                }),
+                headers: {
+                    "Content-type": "application/json"
+                }
+            });
+        }
+
+        var myForm = document.getElementsById("createblogpost");
+        myForm.addEventListener("submit", submitForm)
+</script>
+</body>
