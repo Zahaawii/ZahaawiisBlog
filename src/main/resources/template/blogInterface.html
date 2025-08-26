@@ -13,35 +13,35 @@
 </div>
 
 <script>
- /*
-    let markup = "";
-    fetch('http://localhost:8080/api/blog/getallblogpost')
-        .then(res => {
-            return res.json();
-        })
-        .then(data => {
-            data.forEach(blog => {
-             markup = `${blog.subject}`
+    /*
+       let markup = "";
+       fetch('http://localhost:8080/api/blog/getallblogpost')
+           .then(res => {
+               return res.json();
+           })
+           .then(data => {
+               data.forEach(blog => {
+                markup = `${blog.subject}`
 
-                document.querySelector('.test')
-                    .innerHTML = `${markup}`;
-            })
-        });
- */
+                   document.querySelector('.test')
+                       .innerHTML = `${markup}`;
+               })
+           });
+    */
 
     function test () {
-    let markup = "";
-    fetch('http://localhost:8080/api/blog/getallblogpost')
-        .then(res => {
-            return res.json();
-        })
-        .then(data => {
-            data.forEach(blog => {
-             markup = `${blog.user.name}`
-
-                console.log(markup);
+        let markup = "";
+        fetch('http://localhost:8080/api/blog/getallblogpost')
+            .then(res => {
+                return res.json();
             })
-        });
+            .then(data => {
+                data.forEach(blog => {
+                    markup = `${blog.user.name}`
+
+                    console.log(markup);
+                })
+            });
     }
 
     test();

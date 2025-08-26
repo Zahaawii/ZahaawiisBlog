@@ -17,8 +17,8 @@
     </ul>
 </div>
 
-<form id ="createblogpost"> 
-    <div class="add_subject"> 
+<form class="createblogpost">
+    <div class="add_subject">
         <label for="subject">Subject</label>
         <input class="js_subject" type="text" name="subject" id="form_subject" placeholder="Add subject">
     </div>
@@ -27,12 +27,12 @@
         <label for ="body">Body</label>
         <textarea class = `.js_body` id="body" name="body" rows="30" cols="50"></textarea>
     </div>
-    
+
     <div class="add_category">
         <label for="category">Category</label>
         <input class="js_category" type="text" name="category" id="form_category" placeholder="Add category">
     </div>
-    
+
     <button type="submit" class="btn" onclick="
     submitForm()"
     >Create blog post</button>
@@ -41,29 +41,27 @@
 <script>
     var date = new Date().toISOString().slice(0,10);
 
-    function sumbitForm() {
-    const getSubject = document.querySelector(`.js_subject`);
-    const getBody = document.querySelector(`.js_body`);
-    const getCategory = document.querySelector(`.js_category`);
-    const getDate = date;
+    const formEl = document.querySelector('.createblogpost');
 
-   
+    formEl.addEventListener('submit', event => {
+        event.preventDefault();
 
-    fetch("http://localhost:8080/api/blog/saveblogpost", {
-       method: "POST",
-            body: JSON.stringify({
-                      "subject": `${getSubject}`,
-                      "body": `${getBody}`,
-                      "category": `${getCategory}`,
-                      "publishDate": `${getDate}`
-                }),
-                headers: {
-                    "Content-type": "application/json"
-                }
-            });
-        }
+        const formData = new FormData(formEl);
+        formData.set('publishDate', date);
+        const data = Object.fromEntries(formData);
 
-        var myForm = document.getElementsById("createblogpost");
-        myForm.addEventListener("submit", submitForm)
+        fetch('http://localhost:8080/api/blog/saveblogpost', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(error => console.log(error))
+    });
+
+
 </script>
 </body>
