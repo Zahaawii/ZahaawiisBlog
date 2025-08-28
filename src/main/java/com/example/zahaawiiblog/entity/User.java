@@ -29,6 +29,8 @@ public class User {
 
     private Date createdDate;
 
+    private String roles;
+
     @Override
     public String toString() {
         return "User{" +

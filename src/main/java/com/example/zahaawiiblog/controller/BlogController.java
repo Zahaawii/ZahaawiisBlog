@@ -5,6 +5,7 @@ import com.example.zahaawiiblog.entity.Blog;
 import com.example.zahaawiiblog.entity.User;
 import com.example.zahaawiiblog.service.BlogService;
 import com.example.zahaawiiblog.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
