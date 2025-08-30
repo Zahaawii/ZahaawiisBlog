@@ -1,6 +1,6 @@
 package com.example.zahaawiiblog.service;
 
-import com.example.zahaawiiblog.entity.User;
+import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.example.zahaawiiblog.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +15,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User getUserByUserId(long id) {
+    public UserInfo getUserByUserId(long id) {
         return userRepository.findUserByUserId(id);
     }
 
-    public List<User> getAllUsers() {
-        return (List<User>) userRepository.findAll();
+    public List<UserInfo> getAllUsers() {
+        return (List<UserInfo>) userRepository.findAll();
     }
 
-    public void createNewUser(User user) {
-        userRepository.save(user);
+    public void createNewUser(UserInfo userInfo) {
+        userRepository.save(userInfo);
     }
 
     public long deleteUserById(long userId) {

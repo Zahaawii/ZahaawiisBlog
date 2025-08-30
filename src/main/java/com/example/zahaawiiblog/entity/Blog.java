@@ -1,5 +1,6 @@
 package com.example.zahaawiiblog.entity;
 
+import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class Blog {
 
     @OneToOne(cascade =  CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserInfo userInfo;
 
     @Override
     public String toString() {
@@ -39,7 +40,7 @@ public class Blog {
                 ", body='" + body + '\'' +
                 ", category='" + category + '\'' +
                 ", publishDate=" + publishDate +
-                ", user=" + user +
+                ", user=" + userInfo +
                 '}';
     }
 }

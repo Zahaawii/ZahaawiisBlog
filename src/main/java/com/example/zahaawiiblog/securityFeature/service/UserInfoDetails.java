@@ -1,6 +1,6 @@
 package com.example.zahaawiiblog.securityFeature.service;
 
-import com.example.zahaawiiblog.entity.UserInfo;
+import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

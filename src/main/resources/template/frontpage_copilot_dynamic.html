@@ -60,13 +60,13 @@
         return `
     <div class="blog-section">
         <div class="blog-box">
-            <div class="blog-user-logo">
+            <div class="blog-userInfo-logo">
                 <p> billede </p>
             </div>
             <div class="blog-post-subject">
                 <h2>${blog.subject}</h2>
                 <p>${blog.publishDate}</p>
-                <p>Author: ${blog.user?.name || 'Unknown'}</p>
+                <p>Author: ${blog.userInfo?.name || 'Unknown'}</p>
             </div>
             <div class="blog-post-body">
                 <p>${blog.body}</p>

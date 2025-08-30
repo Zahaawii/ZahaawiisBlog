@@ -1,4 +1,4 @@
-package com.example.zahaawiiblog.entity;
+package com.example.zahaawiiblog.securityFeature.Entity;
 
 
 import jakarta.persistence.*;
@@ -31,14 +31,4 @@ public class UserInfo {
 
     private String roles;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", createdDate=" + createdDate +
-                '}';
-    }
 }

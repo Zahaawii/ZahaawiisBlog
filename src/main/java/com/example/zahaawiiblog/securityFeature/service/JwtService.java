@@ -2,10 +2,10 @@ package com.example.zahaawiiblog.securityFeature.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -19,6 +19,7 @@ public class JwtService {
 
     public static final String SECRET =
             "5367566859703373367639792F423F452848284D6251655468576D5A71347437";
+
 
     public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
@@ -36,7 +37,7 @@ public class JwtService {
     }
 
     private Key getSignKey() {
-        byte [] keyBytes = Decoders.BASE64.decode(SECRET);
+        byte [] keyBytes = Decoders.BASE64URL.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -48,12 +49,12 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResovler) {
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
-        return claimsResovler.apply(claims);
+        return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(getSignKey())
                 .build()
@@ -61,13 +62,8 @@ public class JwtService {
                 .getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+    private Boolean isTokenExpire() {
+        gaa
     }
 
-    public Boolean validateToken(String token, UserDetails userdetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userdetails.getUsername()) && !isTokenExpired(token));
-
-    }
 }

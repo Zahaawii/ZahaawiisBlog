@@ -1,7 +1,7 @@
 package com.example.zahaawiiblog.securityFeature.service;
 
 
-import com.example.zahaawiiblog.entity.UserInfo;
+import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.example.zahaawiiblog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

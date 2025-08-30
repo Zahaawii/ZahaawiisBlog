@@ -22,7 +22,7 @@
 
     <div class="blog-box">
 
-        <div class="blog-user-logo">
+        <div class="blog-userInfo-logo">
             <p> billede </p>
         </div>
 
@@ -73,7 +73,7 @@
 
     <div class="blog-box">
 
-        <div class="blog-user-logo">
+        <div class="blog-userInfo-logo">
             <p> billede </p>
         </div>
 
@@ -179,7 +179,7 @@
             return res.json();
         }).then (data => {
             data.forEach(blog => {
-                getAuthor = `${blog.user.name}`
+                getAuthor = `${blog.userInfo.name}`
 
                 document.querySelector(divClass).innerHTML = `Author: ${getAuthor}`;
 

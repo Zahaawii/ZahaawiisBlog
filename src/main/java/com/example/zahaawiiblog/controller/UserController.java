@@ -1,10 +1,12 @@
 package com.example.zahaawiiblog.controller;
 
 
-import com.example.zahaawiiblog.entity.User;
+import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.example.zahaawiiblog.securityFeature.Entity.AuthRequest;
 import com.example.zahaawiiblog.securityFeature.service.JwtService;
+import com.example.zahaawiiblog.securityFeature.service.UserInfoService;
 import com.example.zahaawiiblog.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,35 +17,38 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/users/")
+@RequestMapping("/api/users")
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private UserInfoService service;
     private JwtService jwtService;
     private AuthenticationManager authenticationManager;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "Welcome this endpoint is not secure";
     }
 
 
     @GetMapping("/getallusers")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> getAllUsers = userService.getAllUsers();
-        return new ResponseEntity<>(getAllUsers, HttpStatus.OK);
+    public ResponseEntity<List<UserInfo>> getAllUsers() {
+        List<UserInfo> getAllUserInfos = userService.getAllUsers();
+        return new ResponseEntity<>(getAllUserInfos, HttpStatus.OK);
     }
 
     @GetMapping("/getuserbyid/{userid}")
-    public ResponseEntity<User> getUserById(@PathVariable int userid) {
-        User findUser = userService.getUserByUserId(userid);
-        return new ResponseEntity<>(findUser, HttpStatus.OK);
+    public ResponseEntity<UserInfo> getUserById(@PathVariable int userid) {
+        UserInfo findUserInfo = userService.getUserByUserId(userid);
+        return new ResponseEntity<>(findUserInfo, HttpStatus.OK);
     }
 
     @PostMapping("/createuser")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        userService.createNewUser(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    public ResponseEntity<?> createUser(@RequestBody UserInfo userInfo) {
+        service.addUser(userInfo);
+        return new ResponseEntity<>(userInfo, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteuser/{userId}")
@@ -61,7 +66,7 @@ public class UserController {
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
         if(authentication.isAuthenticated()) {
-            return new jwtService.generateToken(authRequest.getUsername());
+            return jwtService.generateToken(authRequest.getUsername());
         } else {
             throw new UsernameNotFoundException("Invalid user request!");
         }
