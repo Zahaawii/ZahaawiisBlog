@@ -28,8 +28,8 @@ public class Blog {
 
     private Date publishDate;
 
-    @OneToOne(cascade =  CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "name")
     private UserInfo userInfo;
 
     @Override

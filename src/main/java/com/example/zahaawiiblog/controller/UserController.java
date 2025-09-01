@@ -1,6 +1,7 @@
 package com.example.zahaawiiblog.controller;
 
 
+import com.example.zahaawiiblog.securityFeature.DTO.AuthResponse;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.example.zahaawiiblog.securityFeature.Entity.AuthRequest;
 import com.example.zahaawiiblog.securityFeature.service.JwtService;
@@ -63,16 +64,15 @@ public class UserController {
         return new ResponseEntity<>("User with id " + userId + " has been deleted", HttpStatus.OK);
     }
 
-    @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    @PostMapping("/auth/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
-        if(authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
-        } else {
-            throw new UsernameNotFoundException("Invalid user request!");
-        }
+        String token = jwtService.generateToken(authRequest.getUsername());
+        long ttlSeconds = 15 * 60;
+
+        return ResponseEntity.ok(new AuthResponse(token, ttlSeconds));
     }
 
 }
