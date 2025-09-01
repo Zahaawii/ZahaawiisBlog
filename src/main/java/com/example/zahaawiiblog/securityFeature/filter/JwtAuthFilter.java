@@ -38,20 +38,38 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String username = null;
 
         if(authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(0);
+            token = authHeader.substring(7);
             username = jwtService.extractUsername(token);
         }
 
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                if(jwtService.validateToken(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities());
+        try {
+            System.out.println("AUTH HDR: '" + authHeader + "'");
+            System.out.println("TOKEN   : '" + token + "'");
+            username = jwtService.extractUsername(token);
+            System.out.println("USERNAME: " + username);
+        } catch (Exception e) {
+            System.out.println("extractUsername() FAILED: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            filterChain.doFilter(request, response);
+            return; // vigtigt: lad request fortsætte; lad ikke filteret smide 403
+        }
+
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            try {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                boolean valid = jwtService.validateToken(token, userDetails);
+                System.out.println("validateToken: " + valid + " | authorities: " + userDetails.getAuthorities());
+
+                if (valid) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
+            } catch (Exception e) {
+                System.out.println("Auth building FAILED: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+                // ingen 403 her – bare fortsæt
+            }
         }
         filterChain.doFilter(request, response);
     }

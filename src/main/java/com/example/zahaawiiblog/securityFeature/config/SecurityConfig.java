@@ -23,10 +23,12 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
+    private final PasswordConfig passwordConfig;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter, UserDetailsService userDetailsService) {
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter, UserDetailsService userDetailsService, PasswordConfig passwordConfig) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.userDetailsService = userDetailsService;
+        this.passwordConfig = passwordConfig;
     }
 
     @Bean
@@ -36,13 +38,14 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/api/users/welcome",
-                                "/api/users/createuser",
-                                "/api/users/generateToken")
+                        .requestMatchers("/api/v1/users/welcome",
+                                "/api/v1/users/createuser",
+                                "/api/v1/users/generateToken",
+                                "/api/v1/blog/**")
                         .permitAll()
 
-                        .requestMatchers("/api/users/**").hasAnyAuthority("ROLE_USER")
-                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/v1/users/**").hasRole("USER")
+                        .requestMatchers("/api/v1/admin/**").hasAuthority("ROLE_ADMIN")
 
                         .anyRequest().authenticated()
                 )
@@ -52,21 +55,16 @@ public class SecurityConfig {
                         (SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
 
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter,UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
      @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-     }
-
-     @Bean
     public AuthenticationProvider authenticationProvider() {
          DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
          provider.setUserDetailsService(userDetailsService);
-         provider.setPasswordEncoder(passwordEncoder());
+         provider.setPasswordEncoder(passwordConfig.passwordEncoder());
 
          return provider;
      }

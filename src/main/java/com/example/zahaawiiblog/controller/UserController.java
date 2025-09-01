@@ -7,6 +7,7 @@ import com.example.zahaawiiblog.securityFeature.service.JwtService;
 import com.example.zahaawiiblog.securityFeature.service.UserInfoService;
 import com.example.zahaawiiblog.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,15 +18,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserService userService;
-    private UserInfoService service;
-    private JwtService jwtService;
-    private AuthenticationManager authenticationManager;
+    private final UserInfoService service;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -46,10 +48,11 @@ public class UserController {
     }
 
     @PostMapping("/createuser")
-    public ResponseEntity<?> createUser(@RequestBody UserInfo userInfo) {
-        service.addUser(userInfo);
-        return new ResponseEntity<>(userInfo, HttpStatus.CREATED);
+    public ResponseEntity<String> createUser(@RequestBody UserInfo userInfo) {
+        String result = service.addUser(userInfo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
+
 
     @DeleteMapping("/deleteuser/{userId}")
     public ResponseEntity<?> deleteUserById(@PathVariable int userId) {

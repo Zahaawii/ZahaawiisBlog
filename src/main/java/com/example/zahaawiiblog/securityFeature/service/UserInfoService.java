@@ -20,6 +20,7 @@ import java.util.Optional;
 @Service
 public class UserInfoService implements UserDetailsService {
 
+
     private final UserRepository repository;
     private final PasswordEncoder encoder;
 
@@ -33,19 +34,11 @@ public class UserInfoService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws
             UsernameNotFoundException {
-        Optional <UserInfo> userInfo = repository.findByEmail(username);
-
-        if(userInfo.isEmpty()) {
-            throw new UsernameNotFoundException("User not found with email: " + username);
-        }
-
-        UserInfo user = userInfo.get();
-        List<SimpleGrantedAuthority> authorities = Arrays.stream(user.getRoles().split(","))
-            .map(String::trim)
-            .filter(role -> !role.isEmpty())
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
-        return new User(user.getEmail(), user.getPassword(), authorities);
+        UserInfo userInfo = repository.findByName(username).orElseThrow(() -> new UsernameNotFoundException("Not found: " + username));
+        return User.withUsername(userInfo.getName())
+                .password(userInfo.getPassword())
+                .authorities(new SimpleGrantedAuthority("ROLE_USER"))
+                .build();
     }
 
     public String addUser(UserInfo userInfo) {

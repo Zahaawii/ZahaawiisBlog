@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/blog")
+@RequestMapping("/api/v1/blog")
 @RestController
 @CrossOrigin(origins = "*")
 public class BlogController {
