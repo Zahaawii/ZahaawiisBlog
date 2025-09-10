@@ -2,6 +2,7 @@ package com.example.zahaawiiblog.securityFeature.Entity;
 
 
 import com.example.zahaawiiblog.entity.Blog;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,9 @@ public class UserInfo {
 
     private String roles;
 
+    private String imgPath;
+
+    @JsonBackReference
     @OneToMany(mappedBy = "userInfo")
     private List<Blog> authorPost;
 

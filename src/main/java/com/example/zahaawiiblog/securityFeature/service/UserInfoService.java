@@ -3,6 +3,7 @@ package com.example.zahaawiiblog.securityFeature.service;
 
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.example.zahaawiiblog.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,17 @@ public class UserInfoService implements UserDetailsService {
     public UserInfoService(UserRepository repository, PasswordEncoder encoder) {
         this.repository = repository;
         this.encoder = encoder;
+    }
+
+    @Transactional
+    public void uploadImage(Long id, String imgPath) {
+        if(repository.findUserByUserId(id) == null) {
+            throw new IllegalArgumentException("User not found: " + id);
+        }
+        UserInfo findUser = repository.findUserByUserId(id);
+        findUser.setImgPath(imgPath);
+        repository.save(findUser);
+
     }
 
 
