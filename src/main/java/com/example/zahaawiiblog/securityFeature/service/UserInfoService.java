@@ -39,7 +39,6 @@ public class UserInfoService implements UserDetailsService {
         UserInfo findUser = repository.findUserByUserId(id);
         findUser.setImgPath(imgPath);
         repository.save(findUser);
-
     }
 
 

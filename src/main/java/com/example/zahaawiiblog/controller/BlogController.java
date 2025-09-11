@@ -1,13 +1,17 @@
 package com.example.zahaawiiblog.controller;
 
 
+import com.example.zahaawiiblog.DTO.CreateBlogDto;
 import com.example.zahaawiiblog.entity.Blog;
+import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.example.zahaawiiblog.service.BlogService;
 import com.example.zahaawiiblog.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RequestMapping("/api/v1/blog")
@@ -45,8 +49,20 @@ public class BlogController {
     }
 
     @PostMapping("/saveblogpost")
-    public ResponseEntity<?> addBlog(@RequestBody Blog newBlogPost) {
-        blogService.addNewBlogPost(newBlogPost);
-        return new ResponseEntity<>(newBlogPost, HttpStatus.CREATED);
+    public ResponseEntity<?> addBlog(@RequestBody CreateBlogDto newBlogPost) {
+        UserInfo user = userService.getUserByUserId(newBlogPost.userId());
+        if(user != null) {
+            Blog b = new Blog();
+            b.setSubject(newBlogPost.subject());
+            b.setBody(newBlogPost.body());
+            b.setCategory(newBlogPost.category());
+            b.setPublishDate(Date.valueOf(LocalDate.now()));
+            b.setUserInfo(user);
+
+            blogService.addNewBlogPost(b);
+            return new ResponseEntity<>(newBlogPost, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+        }
     }
 }
