@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/api/v1/users")
 @RestController
@@ -49,9 +50,10 @@ public class UserController {
     }
 
     @PostMapping("/createuser")
-    public ResponseEntity<String> createUser(@RequestBody UserInfo userInfo) {
-        String result = service.addUser(userInfo);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    public ResponseEntity<Long> createUser(@RequestBody UserInfo userInfo) {
+        service.addUser(userInfo);
+        Optional<UserInfo> userInfo1 = userService.findUserByUsername(userInfo.getName());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userInfo1.get().getUserId());
     }
 
 
@@ -72,7 +74,7 @@ public class UserController {
         String token = jwtService.generateToken(authRequest.getUsername());
         long ttlSeconds = 15 * 60;
 
-        return ResponseEntity.ok(new AuthResponse(token, ttlSeconds));
+        return ResponseEntity.ok(new AuthResponse(token, authRequest.getUsername(),ttlSeconds));
     }
 
 }

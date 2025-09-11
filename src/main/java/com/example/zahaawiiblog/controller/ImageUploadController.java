@@ -28,7 +28,7 @@ import java.nio.file.StandardCopyOption;
 public class ImageUploadController {
 
     @Value("${file.upload-dir}")
-    private String uploadDir; //= "file.upload-dir";
+    private static String uploadDir;
 
     private final UserInfoService userInfoService;
 
@@ -40,6 +40,7 @@ public class ImageUploadController {
     public ResponseEntity<String> uploadImage(@PathVariable Long userid, @RequestParam("file") MultipartFile file) {
         try {
             String filePath = saveImage(file);
+            System.out.println(filePath);
             userInfoService.uploadImage(userid, filePath);
             return ResponseEntity.ok("Image uploaded succesfully: " + filePath);
         } catch (IOException e) {
@@ -47,8 +48,8 @@ public class ImageUploadController {
         }
     }
 
-    private String saveImage(MultipartFile file) throws IOException {
-        Path uploadPath = Paths.get(uploadDir);
+    public static String saveImage(MultipartFile file) throws IOException {
+        Path uploadPath = Paths.get("/Users/zahaawi/IdeaProjects/ZahaawiisBlogFrontend/images");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth == null || !auth.isAuthenticated()) {
@@ -66,7 +67,7 @@ public class ImageUploadController {
         Path filePath = uploadPath.resolve(fileName).normalize();
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        return filePath.toString();
+        return fileName;
     }
 
     @GetMapping("/images/{filename}")

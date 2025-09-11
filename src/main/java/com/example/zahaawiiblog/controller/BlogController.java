@@ -8,11 +8,14 @@ import com.example.zahaawiiblog.service.BlogService;
 import com.example.zahaawiiblog.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/api/v1/blog")
 @RestController
@@ -50,14 +53,19 @@ public class BlogController {
 
     @PostMapping("/saveblogpost")
     public ResponseEntity<?> addBlog(@RequestBody CreateBlogDto newBlogPost) {
-        UserInfo user = userService.getUserByUserId(newBlogPost.userId());
-        if(user != null) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if(auth == null || !auth.isAuthenticated()) {
+            return new ResponseEntity<>("Not able to create blog post, user not found", HttpStatus.CONFLICT);
+        }
+        Optional<UserInfo> user = userService.findUserByUsername(auth.getName());
+        if(user.isPresent()) {
             Blog b = new Blog();
             b.setSubject(newBlogPost.subject());
             b.setBody(newBlogPost.body());
             b.setCategory(newBlogPost.category());
             b.setPublishDate(Date.valueOf(LocalDate.now()));
-            b.setUserInfo(user);
+            b.setUserInfo(user.get());
 
             blogService.addNewBlogPost(b);
             return new ResponseEntity<>(newBlogPost, HttpStatus.CREATED);

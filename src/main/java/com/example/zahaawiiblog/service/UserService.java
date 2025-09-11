@@ -5,6 +5,7 @@ import com.example.zahaawiiblog.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -25,6 +26,10 @@ public class UserService {
 
     public void createNewUser(UserInfo userInfo) {
         userRepository.save(userInfo);
+    }
+
+    public Optional<UserInfo> findUserByUsername(String username) {
+        return userRepository.findByName(username);
     }
 
     public long deleteUserById(long userId) {

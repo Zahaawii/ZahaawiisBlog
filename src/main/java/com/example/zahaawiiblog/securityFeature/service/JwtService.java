@@ -74,7 +74,7 @@ public class JwtService {
         String sub = claims.getSubject();
         Date exp = claims.getExpiration();
 
-        // DEBUG midlertidigt
+        // debug midlertidigt
         System.out.println("validate> sub='" + sub + "', ud.username='" + userDetails.getUsername() + "', exp=" + exp + ", now=" + new Date());
 
         boolean sameUser   = sub != null && userDetails != null && sub.trim().equalsIgnoreCase(userDetails.getUsername().trim());
