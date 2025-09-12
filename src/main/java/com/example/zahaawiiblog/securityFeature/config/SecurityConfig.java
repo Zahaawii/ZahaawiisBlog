@@ -40,11 +40,6 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChainU(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, e) -> {
-                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    res.setContentType("application/json");
-                    res.getWriter().write("{\"error\":\"unauthorized\"}");
-                }))
 
                 .authorizeHttpRequests(auth -> auth
 

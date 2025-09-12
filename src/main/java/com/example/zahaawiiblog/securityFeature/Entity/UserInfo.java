@@ -37,7 +37,7 @@ public class UserInfo {
     private String imgPath;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "userInfo")
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
     private List<Blog> authorPost;
 
 }

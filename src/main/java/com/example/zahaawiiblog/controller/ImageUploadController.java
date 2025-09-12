@@ -28,7 +28,7 @@ import java.nio.file.StandardCopyOption;
 public class ImageUploadController {
 
     @Value("${file.upload-dir}")
-    private static String uploadDir;
+    private String uploadDir;
 
     private final UserInfoService userInfoService;
 
@@ -48,8 +48,8 @@ public class ImageUploadController {
         }
     }
 
-    public static String saveImage(MultipartFile file) throws IOException {
-        Path uploadPath = Paths.get("/Users/zahaawi/IdeaProjects/ZahaawiisBlogFrontend/images");
+    public String saveImage(MultipartFile file) throws IOException {
+        Path uploadPath = Paths.get("/Users/zahaawii/IdeaProjects/ZahaawiisBlogFrontend/images");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth == null || !auth.isAuthenticated()) {

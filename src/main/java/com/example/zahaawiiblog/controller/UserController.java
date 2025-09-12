@@ -1,10 +1,13 @@
 package com.example.zahaawiiblog.controller;
 
 
+import com.example.zahaawiiblog.DTO.AuthResponseDTO;
+import com.example.zahaawiiblog.DTO.SignupRequest;
 import com.example.zahaawiiblog.securityFeature.DTO.AuthResponse;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.example.zahaawiiblog.securityFeature.Entity.AuthRequest;
 import com.example.zahaawiiblog.securityFeature.service.JwtService;
+import com.example.zahaawiiblog.securityFeature.service.UserInfoDetails;
 import com.example.zahaawiiblog.securityFeature.service.UserInfoService;
 import com.example.zahaawiiblog.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +17,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,11 +56,25 @@ public class UserController {
         return new ResponseEntity<>(findUserInfo, HttpStatus.OK);
     }
 
+    @GetMapping("/getuserbyname/{username}")
+    public ResponseEntity<Optional<UserInfo>> getUserByName(@PathVariable String username) {
+        Optional<UserInfo> findUser = userService.findUserByUsername(username);
+        if(findUser.isPresent()) {
+            return new ResponseEntity<>(findUser, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping("/createuser")
-    public ResponseEntity<Long> createUser(@RequestBody UserInfo userInfo) {
-        service.addUser(userInfo);
-        Optional<UserInfo> userInfo1 = userService.findUserByUsername(userInfo.getName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(userInfo1.get().getUserId());
+    public ResponseEntity<AuthResponseDTO> createUser(@RequestBody SignupRequest req) {
+        UserInfo u = new UserInfo(null, req.name(), req.email(),
+                req.password(),Date.valueOf(LocalDate.now()) ,
+                "USER", null, null);
+        service.addUser(u);
+
+        String token = jwtService.generateToken(req.name());
+
+        return ResponseEntity.ok(new AuthResponseDTO(u.getUserId(), u.getName(), token));
     }
 
 
