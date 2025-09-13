@@ -1,6 +1,8 @@
 package com.example.zahaawiiblog.entity;
 
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +32,7 @@ public class Blog {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private UserInfo userInfo;
 
     @Override

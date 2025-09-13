@@ -3,6 +3,7 @@ package com.example.zahaawiiblog.controller;
 
 import com.example.zahaawiiblog.DTO.AuthResponseDTO;
 import com.example.zahaawiiblog.DTO.SignupRequest;
+import com.example.zahaawiiblog.entity.Blog;
 import com.example.zahaawiiblog.securityFeature.DTO.AuthResponse;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.example.zahaawiiblog.securityFeature.Entity.AuthRequest;
@@ -96,6 +97,12 @@ public class UserController {
         long ttlSeconds = 15 * 60;
 
         return ResponseEntity.ok(new AuthResponse(token, authRequest.getUsername(),ttlSeconds));
+    }
+
+    @GetMapping("/test")
+    public List<Blog> test () {
+        UserInfo userInfo = userService.getUserByUserId(1);
+        return userInfo.getAuthorPost();
     }
 
 }

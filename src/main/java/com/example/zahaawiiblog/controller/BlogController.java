@@ -1,6 +1,7 @@
 package com.example.zahaawiiblog.controller;
 
 
+import com.example.zahaawiiblog.DTO.BlogDTO;
 import com.example.zahaawiiblog.DTO.CreateBlogDto;
 import com.example.zahaawiiblog.entity.Blog;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
@@ -37,6 +38,11 @@ public class BlogController {
         return new ResponseEntity<>(findAllBlogPost, HttpStatus.OK);
     }
 
+    @GetMapping("/test/{id}")
+    public ResponseEntity<List<Blog>> getAll(@PathVariable long id) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/getallblogpost")
     public ResponseEntity<List<Blog>> getAll() {
         return new ResponseEntity<>(blogService.getAllBlogs(), HttpStatus.OK);
@@ -54,21 +60,13 @@ public class BlogController {
     @PostMapping("/saveblogpost")
     public ResponseEntity<?> addBlog(@RequestBody CreateBlogDto newBlogPost) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         if(auth == null || !auth.isAuthenticated()) {
             return new ResponseEntity<>("Not able to create blog post, user not found", HttpStatus.CONFLICT);
         }
         Optional<UserInfo> user = userService.findUserByUsername(auth.getName());
         if(user.isPresent()) {
-            Blog b = new Blog();
-            b.setSubject(newBlogPost.subject());
-            b.setBody(newBlogPost.body());
-            b.setCategory(newBlogPost.category());
-            b.setPublishDate(Date.valueOf(LocalDate.now()));
-            b.setUserInfo(user.get());
-
-            blogService.addNewBlogPost(b);
-            return new ResponseEntity<>(newBlogPost, HttpStatus.CREATED);
+            BlogDTO dto = blogService.addNewBlogPost(newBlogPost, user.get());
+            return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
         }

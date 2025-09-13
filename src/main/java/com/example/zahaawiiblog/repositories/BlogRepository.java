@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface BlogRepository extends CrudRepository<Blog, Long> {
     List<Blog> findByBlogId(Long blogId);
+    List<Blog> findAllByUserInfo_UserId(Long userInfoUserId);
 }

@@ -3,6 +3,8 @@ package com.example.zahaawiiblog.securityFeature.Entity;
 
 import com.example.zahaawiiblog.entity.Blog;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +38,9 @@ public class UserInfo {
 
     private String imgPath;
 
-    @JsonBackReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Blog> authorPost;
 
 }

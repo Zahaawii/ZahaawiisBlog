@@ -1,7 +1,11 @@
 package com.example.zahaawiiblog.service;
 
+import com.example.zahaawiiblog.DTO.BlogDTO;
+import com.example.zahaawiiblog.DTO.CreateBlogDto;
 import com.example.zahaawiiblog.entity.Blog;
+import com.example.zahaawiiblog.mapper.BlogMapper;
 import com.example.zahaawiiblog.repositories.BlogRepository;
+import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +24,20 @@ public class BlogService {
         return blogRepository.findByBlogId(id);
     }
 
-    public void addNewBlogPost(Blog blog) {
-        blogRepository.save(blog);
+    public BlogDTO addNewBlogPost(CreateBlogDto blog, UserInfo currentUser) {
+        Blog b = new Blog();
+        b.setSubject(blog.subject());
+        b.setBody(blog.body());
+        b.setCategory(blog.category());
+        b.setPublishDate(blog.publishDate());
+        b.setUserInfo(currentUser);
+        Blog saved = blogRepository.save(b);
+        return BlogMapper.toDTO(saved);
+    }
+
+    public List<BlogDTO> getBlogsByUserId(Long userId) {
+        var blogs = blogRepository.findAllByUserInfo_UserId(userId);
+        return blogs.stream().map(BlogMapper::toDTO).toList();
     }
 
     public List<Blog> getAllBlogs() {
