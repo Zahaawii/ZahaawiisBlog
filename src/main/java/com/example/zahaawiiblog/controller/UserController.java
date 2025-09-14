@@ -82,7 +82,7 @@ public class UserController {
     @DeleteMapping("/deleteuser/{userId}")
     public ResponseEntity<?> deleteUserById(@PathVariable int userId) {
         if(userService.deleteUserById(userId) == -1) {
-            return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
         }
         userService.deleteUserById(userId);
         return new ResponseEntity<>("User with id " + userId + " has been deleted", HttpStatus.OK);
@@ -101,7 +101,7 @@ public class UserController {
 
     @GetMapping("/test")
     public List<Blog> test () {
-        UserInfo userInfo = userService.getUserByUserId(1);
+        UserInfo userInfo = userService.getUserByUserId(3);
         return userInfo.getAuthorPost();
     }
 
