@@ -35,6 +35,8 @@ public class Blog {
     @JsonIgnore
     private UserInfo userInfo;
 
+
+
     @Override
     public String toString() {
         return "Blog{" +
