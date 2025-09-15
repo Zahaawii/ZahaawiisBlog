@@ -13,4 +13,5 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     List<Blog> findByBlogId(Long blogId);
     List<Blog> findAllByUserInfo_UserId(Long userInfoUserId);
     List<Blog> findAllByUserInfo_Name(String username);
+    Blog findBlogByBlogId(Long id);
 }

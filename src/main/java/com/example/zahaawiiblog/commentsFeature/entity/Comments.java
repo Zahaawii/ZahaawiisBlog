@@ -2,12 +2,16 @@ package com.example.zahaawiiblog.commentsFeature.entity;
 
 import com.example.zahaawiiblog.entity.Blog;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -18,11 +22,14 @@ public class Comments {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "comment_id", nullable = false)
+    private String userComment;
+
+    @ManyToOne
+    @JoinColumn(name = "blog_id")
+    @JsonBackReference
     private Blog blog;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private UserInfo user;
 }

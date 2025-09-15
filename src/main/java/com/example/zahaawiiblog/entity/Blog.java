@@ -1,12 +1,15 @@
 package com.example.zahaawiiblog.entity;
 
+import com.example.zahaawiiblog.commentsFeature.entity.Comments;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -35,7 +38,9 @@ public class Blog {
     @JsonIgnore
     private UserInfo userInfo;
 
-
+    @OneToMany(mappedBy = "blog")
+    @JsonManagedReference
+    private List<Comments> comments;
 
     @Override
     public String toString() {
