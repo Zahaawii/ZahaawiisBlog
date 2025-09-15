@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static java.util.Arrays.stream;
+
 @Service
 public class BlogService {
 
@@ -22,6 +24,10 @@ public class BlogService {
 
     public List<Blog> findAllByBlogId(long id) {
         return blogRepository.findByBlogId(id);
+    }
+
+    public List<Blog> findAllByUsername(String username) {
+        return blogRepository.findAllByUserInfo_Name(username);
     }
 
     public BlogDTO addNewBlogPost(CreateBlogDto blog, UserInfo currentUser) {
@@ -40,8 +46,8 @@ public class BlogService {
         return blogs.stream().map(BlogMapper::toDTO).toList();
     }
 
-    public List<Blog> getAllBlogs() {
-        return (List<Blog>) blogRepository.findAll();
+    public List<BlogDTO> getAllBlogs() {
+      return blogRepository.findAll().stream().map(BlogMapper::toDTO).toList();
     }
 
     public void removeBlogPost(long deleteId) {

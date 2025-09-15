@@ -38,13 +38,19 @@ public class BlogController {
         return new ResponseEntity<>(findAllBlogPost, HttpStatus.OK);
     }
 
+    @GetMapping("/getbyusername/{username}")
+    public ResponseEntity<List<Blog>> getAllByUsernamne(@PathVariable String username) {
+        List<Blog> findAllBlogPostByUsername = blogService.findAllByUsername(username);
+        return new ResponseEntity<>(findAllBlogPostByUsername, HttpStatus.OK);
+    }
+
     @GetMapping("/test/{id}")
     public ResponseEntity<List<Blog>> getAll(@PathVariable long id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/getallblogpost")
-    public ResponseEntity<List<Blog>> getAll() {
+    public ResponseEntity<List<BlogDTO>> getAll() {
         return new ResponseEntity<>(blogService.getAllBlogs(), HttpStatus.OK);
     }
 

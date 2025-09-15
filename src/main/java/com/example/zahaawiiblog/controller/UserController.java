@@ -101,7 +101,7 @@ public class UserController {
 
     @GetMapping("/test")
     public List<Blog> test () {
-        UserInfo userInfo = userService.getUserByUserId(3);
+        UserInfo userInfo = userService.getUserByUserId(1);
         return userInfo.getAuthorPost();
     }
 
