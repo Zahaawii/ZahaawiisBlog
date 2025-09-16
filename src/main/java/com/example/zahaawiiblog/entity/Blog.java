@@ -38,7 +38,7 @@ public class Blog {
     @JsonIgnore
     private UserInfo userInfo;
 
-    @OneToMany(mappedBy = "blog")
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Comments> comments;
 
