@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -32,4 +34,6 @@ public class Comments {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserInfo user;
+
+    private Date createdComment;
 }

@@ -1,4 +1,6 @@
 package com.example.zahaawiiblog.commentsFeature.DTO;
 
-public record CommentsDTO(String comment, Long blogId, Long userId) {
+import java.sql.Date;
+
+public record CommentsDTO(Long commentId,String comment, Long blogId, Long userId, Date date) {
 }

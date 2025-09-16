@@ -11,9 +11,11 @@ public final class CommentsMapper {
 
     public static CommentsDTO toDTO(Comments c) {
         return new CommentsDTO(
+                c.getCommentId(),
                 c.getUserComment(),
                 c.getBlog().getBlogId(),
-                c.getUser().getUserId()
-        );
+                c.getUser().getUserId(),
+                c.getCreatedComment()
+                );
     }
 }
