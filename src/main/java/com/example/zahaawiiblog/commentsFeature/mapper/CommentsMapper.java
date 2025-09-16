@@ -14,7 +14,7 @@ public final class CommentsMapper {
                 c.getCommentId(),
                 c.getUserComment(),
                 c.getBlog().getBlogId(),
-                c.getUser().getUserId(),
+                c.getUser().getName(),
                 c.getCreatedComment()
                 );
     }
