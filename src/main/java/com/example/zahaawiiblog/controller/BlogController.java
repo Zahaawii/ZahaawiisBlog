@@ -32,10 +32,8 @@ public class BlogController {
     }
 
     @GetMapping("/getbyid/{id}")
-    public ResponseEntity<List<Blog>> getAll(@PathVariable int id) {
-        List<Blog> findAllBlogPost = blogService.findAllByBlogId(id);
-        System.out.println(findAllBlogPost);
-        return new ResponseEntity<>(findAllBlogPost, HttpStatus.OK);
+    public Optional<Blog> getAll(@PathVariable Long id) {
+        return new ResponseEntity<>(blogService.findById(id), HttpStatus.OK).getBody();
     }
 
     @GetMapping("/getbyusername/{username}")
@@ -56,8 +54,8 @@ public class BlogController {
 
     @DeleteMapping("/deletepost/{id}")
     public ResponseEntity<?> removeBlog(@PathVariable int id) {
-        if(blogService.findAllByBlogId(id).isEmpty()) {
-            return new ResponseEntity<>("Blog post does not exsist", HttpStatus.BAD_REQUEST);
+        if(blogService.findById(id).isEmpty()) {
+            return new ResponseEntity<>("Blog post does not exist", HttpStatus.BAD_REQUEST);
         }
         blogService.removeBlogPost(id);
         return new ResponseEntity<>("Blog post with id " + id + " was deleted", HttpStatus.OK);

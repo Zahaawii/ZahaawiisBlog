@@ -9,6 +9,7 @@ import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Arrays.stream;
 
@@ -21,6 +22,9 @@ public class BlogService {
         this.blogRepository = blogRepository;
     }
 
+    public Optional<Blog> findById(long id) {
+        return blogRepository.findById(id);
+    }
 
     public List<Blog> findAllByBlogId(long id) {
         return blogRepository.findByBlogId(id);
