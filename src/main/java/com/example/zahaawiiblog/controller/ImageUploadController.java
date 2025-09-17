@@ -69,22 +69,4 @@ public class ImageUploadController {
 
         return fileName;
     }
-
-    @GetMapping("/images/{filename}")
-    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
-        try {
-            Path filePath = Paths.get(uploadDir).resolve(filename);
-            UrlResource resource = new UrlResource(filePath.toUri());
-
-            if(resource.exists()) {
-                return ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG)
-                        .body(resource);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (MalformedURLException e) {
-            return (ResponseEntity<Resource>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }
