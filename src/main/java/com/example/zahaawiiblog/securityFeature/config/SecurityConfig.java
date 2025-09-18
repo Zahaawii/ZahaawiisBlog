@@ -48,7 +48,8 @@ public class SecurityConfig {
                                 "/api/v1/users/**",
                                 "/api/v1/users/auth/login",
                                 "/api/v1/uploads/**",
-                                "/api/v1/blog/**")
+                                "/api/v1/blog/**",
+                                "/api/status/healthz")
                         .permitAll()
 
                         .requestMatchers("/api/v1/users/**").hasRole("USER")
