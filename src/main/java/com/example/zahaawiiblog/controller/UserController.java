@@ -4,25 +4,22 @@ package com.example.zahaawiiblog.controller;
 import com.example.zahaawiiblog.DTO.AuthResponseDTO;
 import com.example.zahaawiiblog.DTO.SignupRequest;
 import com.example.zahaawiiblog.entity.Blog;
+import com.example.zahaawiiblog.logginFeature.service.LoggingService;
 import com.example.zahaawiiblog.securityFeature.DTO.AuthResponse;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.example.zahaawiiblog.securityFeature.Entity.AuthRequest;
 import com.example.zahaawiiblog.securityFeature.service.JwtService;
-import com.example.zahaawiiblog.securityFeature.service.UserInfoDetails;
 import com.example.zahaawiiblog.securityFeature.service.UserInfoService;
 import com.example.zahaawiiblog.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -38,6 +35,7 @@ public class UserController {
     private final UserInfoService service;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final LoggingService loggingService;
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -71,7 +69,9 @@ public class UserController {
         UserInfo u = new UserInfo(null, req.name(), req.email(),
                 req.password(),Date.valueOf(LocalDate.now()) ,
                 "USER", null, null);
+
         service.addUser(u);
+        loggingService.log(u.getUserId(), u.getName() + ": was created", u.getName(), 1L);
 
         String token = jwtService.generateToken(req.name());
 
@@ -81,10 +81,14 @@ public class UserController {
 
     @DeleteMapping("/deleteuser/{userId}")
     public ResponseEntity<?> deleteUserById(@PathVariable int userId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<UserInfo> user = userService.findUserByUsername(auth.getName());
         if(userService.deleteUserById(userId) == -1) {
+            loggingService.log(user.get().getUserId(), auth.getName() +": Tried to delete user but failed", user.get().getName(), 4L);
             return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
         }
         userService.deleteUserById(userId);
+        loggingService.log(user.get().getUserId(), auth.getName() + ": Deleted user succesfully", user.get().getName(), 3L);
         return new ResponseEntity<>("User with id " + userId + " has been deleted", HttpStatus.OK);
     }
 
@@ -92,17 +96,12 @@ public class UserController {
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        Optional<UserInfo> user = userService.findUserByUsername(authentication.getName());
 
         String token = jwtService.generateToken(authRequest.getUsername());
         long ttlSeconds = 15 * 60;
-
+        loggingService.log(user.get().getUserId(), user.get().getName() + ": logged in to the system", authentication.getName(), 7L);
         return ResponseEntity.ok(new AuthResponse(token, authRequest.getUsername(),ttlSeconds));
-    }
-
-    @GetMapping("/test")
-    public List<Blog> test () {
-        UserInfo userInfo = userService.getUserByUserId(1);
-        return userInfo.getAuthorPost();
     }
 
 }

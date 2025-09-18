@@ -29,12 +29,13 @@ public class Logging {
 
     /*
     Action ID is what action that has occurred.
-    ID 1: User created a blog post
-    ID 2: User tried to create a blog post
-    ID 3: User deleted a blog post
-    ID 4: User tried to delete a blog post
-    ID 5 : User accessed homepage
+    ID 1: User created something
+    ID 2: User tried to create but failed
+    ID 3: User deleted something
+    ID 4: User tried to delete but failed
+    ID 5: User accessed homepage
     ID 6: User accessed a profile
+    ID 7: User logged in
      */
     private Long actionId;
 

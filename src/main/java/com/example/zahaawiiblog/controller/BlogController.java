@@ -14,8 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +43,7 @@ public class BlogController {
         I am thinking that a possibility would be to create a post request where it sends information to the server
         Maybe use a method to receive user information by the jwt token so we can fill out all the table fields.
         we'll see what's the best solution */
-        loggingService.blogLog(0L, "a user accessed: " + username + " profile", username, 6L);
+        loggingService.log(0L, "a user accessed: " + username + "s" +" profile", username, 6L);
         List<Blog> findAllBlogPostByUsername = blogService.findAllByUsername(username);
         return new ResponseEntity<>(findAllBlogPostByUsername, HttpStatus.OK);
     }
@@ -58,7 +56,7 @@ public class BlogController {
         we'll see what's the best solution */
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        loggingService.blogLog(0L, "user accessed homepage", auth.getName(), 5L);
+        loggingService.log(0L, "user accessed homepage", auth.getName(), 5L);
         return new ResponseEntity<>(blogService.getAllBlogs(), HttpStatus.OK);
     }
 
@@ -67,11 +65,11 @@ public class BlogController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserInfo> info = userService.findUserByUsername(auth.getName());
         if(blogService.findById(id).isEmpty()) {
-            loggingService.blogLog(4L,auth.getName() + " :tried to delete blog post: " + id + "but failed", info.get().getName(), 4L);
+            loggingService.log(4L,auth.getName() + " :tried to delete blog post: " + id + "but failed", info.get().getName(), 4L);
             return new ResponseEntity<>("Blog post does not exist", HttpStatus.BAD_REQUEST);
         }
         blogService.removeBlogPost(id);
-        loggingService.blogLog(info.get().getUserId(),auth.getName() + ": deleted blog post with id: " + id, info.get().getName(), 3L);
+        loggingService.log(info.get().getUserId(),auth.getName() + ": deleted blog post with id: " + id, info.get().getName(), 3L);
         return new ResponseEntity<>("Blog post with id " + id + " was deleted", HttpStatus.OK);
     }
 
@@ -79,16 +77,16 @@ public class BlogController {
     public ResponseEntity<?> addBlog(@RequestBody CreateBlogDto newBlogPost) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth == null || !auth.isAuthenticated()) {
-            loggingService.blogLog(newBlogPost.userId(), "tried to create a blog post but failed", "User not created", 2L);
+            loggingService.log(newBlogPost.userId(), "tried to create a blog post but failed", "User not created", 2L);
             return new ResponseEntity<>("Not able to create blog post, user not found", HttpStatus.CONFLICT);
         }
         Optional<UserInfo> user = userService.findUserByUsername(auth.getName());
         if(user.isPresent()) {
             BlogDTO dto = blogService.addNewBlogPost(newBlogPost, user.get());
-            loggingService.blogLog(user.get().getUserId(), user.get().getName() + ": created a blog post",user.get().getName(), 1L);
+            loggingService.log(user.get().getUserId(), user.get().getName() + ": created a blog post",user.get().getName(), 1L);
             return new ResponseEntity<>(dto, HttpStatus.CREATED);
         } else {
-            loggingService.blogLog(user.get().getUserId(), auth.getName() + ": tried to create a blog post but failed", auth.getName(), 2L);
+            loggingService.log(user.get().getUserId(), auth.getName() + ": tried to create a blog post but failed", auth.getName(), 2L);
             return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
         }
     }

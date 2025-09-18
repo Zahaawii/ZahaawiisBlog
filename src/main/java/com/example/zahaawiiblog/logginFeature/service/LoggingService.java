@@ -15,7 +15,7 @@ public class LoggingService {
         this.loggingRepository = loggingRepository;
     }
 
-    public void blogLog(Long userId, String test,String username, Long postId) {
+    public void log(Long userId, String test, String username, Long postId) {
         Logging logging = new Logging();
         logging.setUserId(userId);
         logging.setUsername(username);
