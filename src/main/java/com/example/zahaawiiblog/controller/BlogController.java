@@ -38,13 +38,13 @@ public class BlogController {
     }
 
     @GetMapping("/getbyusername/{username}")
-    public ResponseEntity<List<Blog>> getAllByUsernamne(@PathVariable String username) {
+    public ResponseEntity<List<BlogDTO>> getAllByUsernamne(@PathVariable String username) {
         /* The one line of code should be changed to see who the user is if user is logged in.
         I am thinking that a possibility would be to create a post request where it sends information to the server
         Maybe use a method to receive user information by the jwt token so we can fill out all the table fields.
         we'll see what's the best solution */
         loggingService.log(0L, "a user accessed: " + username + "s" +" profile", username, 6L);
-        List<Blog> findAllBlogPostByUsername = blogService.findAllByUsername(username);
+        List<BlogDTO> findAllBlogPostByUsername = blogService.findAllByUsername(username);
         return new ResponseEntity<>(findAllBlogPostByUsername, HttpStatus.OK);
     }
 

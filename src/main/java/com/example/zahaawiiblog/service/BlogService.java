@@ -30,8 +30,8 @@ public class BlogService {
         return blogRepository.findByBlogId(id);
     }
 
-    public List<Blog> findAllByUsername(String username) {
-        return blogRepository.findAllByUserInfo_Name(username);
+    public List<BlogDTO> findAllByUsername(String username) {
+        return blogRepository.findAllByUserInfo_Name(username).stream().map(BlogMapper::toDTO).toList();
     }
 
     public BlogDTO addNewBlogPost(CreateBlogDto blog, UserInfo currentUser) {
