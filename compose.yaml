@@ -2,9 +2,10 @@ services:
   db:
     image: mysql:latest
     environment:
-      MYSQL_PASSWORD: Zahaa123
-      MYSQL_USER: Zahaa
+      MYSQL_ROOT_PASSWORD: supersecretroot
       MYSQL_DATABASE: ZahaawiiBlog
+      MYSQL_USER: Zahaa
+      MYSQL_PASSWORD: Zahaa123
     ports:
       - 3307:3306
     volumes:
@@ -18,7 +19,7 @@ services:
       - db
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ZahaawiiBlog?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_USERNAME: Zahaa
       SPRING_DATASOURCE_PASSWORD: Zahaa123
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
 volumes:
