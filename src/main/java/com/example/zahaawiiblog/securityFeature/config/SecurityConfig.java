@@ -49,7 +49,8 @@ public class SecurityConfig {
                                 "/api/v1/users/auth/login",
                                 "/api/v1/uploads/**",
                                 "/api/v1/blog/**",
-                                "/api/status/healthz")
+                                "/api/status/healthz",
+                                "/api/index")
                         .permitAll()
 
                         .requestMatchers("/api/v1/users/**").hasRole("USER")
