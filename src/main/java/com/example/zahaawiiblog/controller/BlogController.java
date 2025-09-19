@@ -33,8 +33,8 @@ public class BlogController {
     }
 
     @GetMapping("/getbyid/{id}")
-    public Optional<Blog> getBlogByBlogId(@PathVariable Long id) {
-        return new ResponseEntity<>(blogService.findById(id), HttpStatus.OK).getBody();
+    public ResponseEntity<Optional<Blog>> getBlogByBlogId(@PathVariable Long id) {
+        return new ResponseEntity<>(blogService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping("/getbyusername/{username}")
