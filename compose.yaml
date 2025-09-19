@@ -1,26 +1,42 @@
 services:
   db:
-    image: mysql:latest
+    image: mysql:8.0
+    container_name: zhb-db
     environment:
       MYSQL_ROOT_PASSWORD: supersecretroot
       MYSQL_DATABASE: ZahaawiiBlog
       MYSQL_USER: Zahaa
       MYSQL_PASSWORD: Zahaa123
-    ports:
-      - 3307:3306
+      TZ: Europe/Copenhagen
     volumes:
       - dbdata:/var/lib/mysql
+    # Valgfrit at eksponere til værten
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD-SHELL","mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
 
   app:
     build: .
-    ports:
-    - "8080:8080"
-    depends_on:
-      - db
+    container_name: zhb-app
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ZahaawiiBlog?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ZahaawiiBlog?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&connectTimeout=30000&socketTimeout=30000
       SPRING_DATASOURCE_USERNAME: Zahaa
       SPRING_DATASOURCE_PASSWORD: Zahaa123
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      TZ: Europe/Copenhagen
+      # (valgfrit) Lad Spring ikke fejle hårdt på første forsøg:
+      # SPRING_SQL_INIT_MODE: never
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
 volumes:
   dbdata:
