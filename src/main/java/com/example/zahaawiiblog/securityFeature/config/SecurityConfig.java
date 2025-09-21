@@ -37,26 +37,43 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChainU(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
 
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/",
+                                "/index",
+                                "/index.html",
+                                "/css/**",
+                                "/blogsite.html",
+                                "/loginPage.html",
+                                "/userprofile.html",
+                                "/app.js",
+                                "/userprofile.js",
+                                "/webjars/**",
+                                "/favicon.ico")
+                .permitAll()
 
-                        .requestMatchers("/api/v1/users/welcome",
+                                .requestMatchers("/ws",
+                                                    "/ws/**")
+                                .permitAll()
+                        .requestMatchers(
+                                "/",
                                 "/api/v1/comments/**",
                                 "/api/v1/users/**",
-                                "/api/v1/users/auth/login",
                                 "/api/v1/uploads/**",
                                 "/api/v1/blog/**",
-                                "/api/status/healthz",
-                                "/api/index")
+                                "/api/status/healthz")
                         .permitAll()
 
                         .requestMatchers("/api/v1/users/**").hasRole("USER")
                         .requestMatchers("/api/v1/admin/**").hasAuthority("ROLE_ADMIN")
 
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+
                 )
 
                 .sessionManagement(sess
