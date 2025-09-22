@@ -3,6 +3,7 @@ package com.example.zahaawiiblog.controller;
 
 import com.example.zahaawiiblog.DTO.BlogDTO;
 import com.example.zahaawiiblog.DTO.CreateBlogDto;
+import com.example.zahaawiiblog.DTO.UpdateBlogDTO;
 import com.example.zahaawiiblog.entity.Blog;
 import com.example.zahaawiiblog.logginFeature.service.LoggingService;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
@@ -71,6 +72,22 @@ public class BlogController {
         blogService.removeBlogPost(id);
         loggingService.log(info.get().getUserId(),auth.getName() + ": deleted blog post with id: " + id, info.get().getName(), 3L);
         return new ResponseEntity<>("Blog post with id " + id + " was deleted", HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateBlogPost(@RequestBody UpdateBlogDTO updateBlog) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth == null || !auth.isAuthenticated()) {
+            loggingService.log(updateBlog.userId(), "Tried to update a blog post but fail", "User not logged in",  2L);
+            return new ResponseEntity<>("Not able to update blog post, user not fount", HttpStatus.CONFLICT);
+        }
+
+        Optional<UserInfo> user = userService.findUserByUsername(auth.getName());
+        if(user.isPresent()) {
+            blogService.updateBlogPost(updateBlog);
+            loggingService.log(updateBlog.userId(), "Updated blog post succesfully", user.get().getName(), 1L);
+        }
+        return new ResponseEntity<>("Blog updated succesfully", HttpStatus.OK);
     }
 
     @PostMapping("/saveblogpost")

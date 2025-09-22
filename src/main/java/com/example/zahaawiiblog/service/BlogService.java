@@ -2,6 +2,7 @@ package com.example.zahaawiiblog.service;
 
 import com.example.zahaawiiblog.DTO.BlogDTO;
 import com.example.zahaawiiblog.DTO.CreateBlogDto;
+import com.example.zahaawiiblog.DTO.UpdateBlogDTO;
 import com.example.zahaawiiblog.entity.Blog;
 import com.example.zahaawiiblog.mapper.BlogMapper;
 import com.example.zahaawiiblog.repositories.BlogRepository;
@@ -41,6 +42,14 @@ public class BlogService {
         b.setCategory(blog.category());
         b.setPublishDate(blog.publishDate());
         b.setUserInfo(currentUser);
+        Blog saved = blogRepository.save(b);
+        return BlogMapper.toDTO(saved);
+    }
+
+    public BlogDTO updateBlogPost(UpdateBlogDTO blog) {
+        Blog b = findById(blog.blogId()).orElseThrow(() -> new RuntimeException("blog not found"));
+        b.setSubject(blog.subject());
+        b.setBody(blog.body());
         Blog saved = blogRepository.save(b);
         return BlogMapper.toDTO(saved);
     }
