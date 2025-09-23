@@ -46,12 +46,15 @@ public class BlogService {
         return BlogMapper.toDTO(saved);
     }
 
-    public BlogDTO updateBlogPost(UpdateBlogDTO blog) {
-        Blog b = findById(blog.blogId()).orElseThrow(() -> new RuntimeException("blog not found"));
-        b.setSubject(blog.subject());
-        b.setBody(blog.body());
-        Blog saved = blogRepository.save(b);
-        return BlogMapper.toDTO(saved);
+//    public void updateBlogPost(UpdateBlogDTO blog) {
+//        Blog b = findById(blog.blogId()).orElseThrow(() -> new RuntimeException("blog not found"));
+//        b.setSubject(blog.subject());
+//        b.setBody(blog.body());
+//        Blog saved = blogRepository.save(b);
+//    }
+
+    public void updateBlog(Blog blog) {
+        blogRepository.save(blog);
     }
 
     public List<BlogDTO> getBlogsByUserId(Long userId) {

@@ -75,17 +75,19 @@ public class BlogController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateBlogPost(@RequestBody UpdateBlogDTO updateBlog) {
+    public ResponseEntity<?> updateBlogPost(@RequestBody String updateBlog, @PathVariable long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Blog find = blogService.findById(id).orElseThrow(() -> new RuntimeException("Could not find blog"));
         if(auth == null || !auth.isAuthenticated()) {
-            loggingService.log(updateBlog.userId(), "Tried to update a blog post but fail", "User not logged in",  2L);
+            loggingService.log(find.getUserInfo().getUserId(), "Tried to update a blog post but fail", "User not logged in",  2L);
             return new ResponseEntity<>("Not able to update blog post, user not fount", HttpStatus.CONFLICT);
         }
 
         Optional<UserInfo> user = userService.findUserByUsername(auth.getName());
         if(user.isPresent()) {
-            blogService.updateBlogPost(updateBlog);
-            loggingService.log(updateBlog.userId(), "Updated blog post succesfully", user.get().getName(), 1L);
+            find.setBody(updateBlog);
+            blogService.updateBlog(find);
+            loggingService.log(find.getUserInfo().getUserId(), "Updated blog post succesfully", user.get().getName(), 1L);
         }
         return new ResponseEntity<>("Blog updated succesfully", HttpStatus.OK);
     }
