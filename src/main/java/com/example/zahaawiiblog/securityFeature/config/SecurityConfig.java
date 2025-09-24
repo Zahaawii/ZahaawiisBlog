@@ -55,24 +55,24 @@ public class SecurityConfig {
                                 "/userprofile.js",
                                 "/webjars/**",
                                 "/favicon.ico")
-                .permitAll()
-
-                                .requestMatchers("/ws",
-                                                    "/ws/**")
                                 .permitAll()
-                        .requestMatchers(
-                                "/",
-                                "/api/v1/comments/**",
-                                "/api/v1/users/**",
-                                "/api/v1/uploads/**",
-                                "/api/v1/blog/**",
+
+                                .requestMatchers("/ws", "/ws/**").permitAll()
+
+                                .requestMatchers(
+                                "/api/v1/comments/getcomment/**",
+                                "/api/v1/users/getallusers",
+                                "/api/v1/users/getuserbyid/**",
+                                "/api/v1/users/getuserbyname/**",
+                                "/api/v1/blog/getbyid/**",
+                                "/api/v1/blog/getbyusername/**",
+                                "/api/v1/blog/getallblogpost",
                                 "/api/status/healthz")
                         .permitAll()
 
                         .requestMatchers("/api/v1/users/**").hasRole("USER")
                         .requestMatchers("/api/v1/admin/**").hasAuthority("ROLE_ADMIN")
-
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
 
                 )
 
