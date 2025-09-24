@@ -105,10 +105,9 @@ body {
 }
 
 .loginBox .register-link {
-  font-size: 14.5px;
+  font-size: 15px;
   text-align: center;
-  margin-top: 20px;
-  margin: 20px 0 15px;
+    margin: 20px 0 15px;
 }
 
 .register-link p a {

@@ -3,7 +3,6 @@ package com.example.zahaawiiblog.controller;
 
 import com.example.zahaawiiblog.DTO.AuthResponseDTO;
 import com.example.zahaawiiblog.DTO.SignupRequest;
-import com.example.zahaawiiblog.entity.Blog;
 import com.example.zahaawiiblog.logginFeature.service.LoggingService;
 import com.example.zahaawiiblog.securityFeature.DTO.AuthResponse;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
@@ -36,12 +35,6 @@ public class UserController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final LoggingService loggingService;
-
-    @GetMapping("/welcome")
-    public String welcome() {
-        return "Welcome this endpoint is not secure";
-    }
-
 
     @GetMapping("/getallusers")
     public ResponseEntity<List<UserInfo>> getAllUsers() {

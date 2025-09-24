@@ -2,7 +2,6 @@ package com.example.zahaawiiblog.service;
 
 import com.example.zahaawiiblog.DTO.BlogDTO;
 import com.example.zahaawiiblog.DTO.CreateBlogDto;
-import com.example.zahaawiiblog.DTO.UpdateBlogDTO;
 import com.example.zahaawiiblog.entity.Blog;
 import com.example.zahaawiiblog.mapper.BlogMapper;
 import com.example.zahaawiiblog.repositories.BlogRepository;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Arrays.stream;
 
 @Service
 public class BlogService {
@@ -45,13 +43,6 @@ public class BlogService {
         Blog saved = blogRepository.save(b);
         return BlogMapper.toDTO(saved);
     }
-
-//    public void updateBlogPost(UpdateBlogDTO blog) {
-//        Blog b = findById(blog.blogId()).orElseThrow(() -> new RuntimeException("blog not found"));
-//        b.setSubject(blog.subject());
-//        b.setBody(blog.body());
-//        Blog saved = blogRepository.save(b);
-//    }
 
     public void updateBlog(Blog blog) {
         blogRepository.save(blog);

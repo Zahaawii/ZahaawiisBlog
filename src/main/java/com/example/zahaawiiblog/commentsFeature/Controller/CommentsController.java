@@ -2,11 +2,9 @@ package com.example.zahaawiiblog.commentsFeature.Controller;
 
 
 import com.example.zahaawiiblog.commentsFeature.DTO.CommentsDTO;
-import com.example.zahaawiiblog.commentsFeature.entity.Comments;
 import com.example.zahaawiiblog.commentsFeature.service.CommentsService;
 import com.example.zahaawiiblog.logginFeature.service.LoggingService;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
-import com.example.zahaawiiblog.service.BlogService;
 import com.example.zahaawiiblog.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/comments")

@@ -3,7 +3,6 @@ package com.example.zahaawiiblog.commentsFeature.entity;
 import com.example.zahaawiiblog.entity.Blog;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

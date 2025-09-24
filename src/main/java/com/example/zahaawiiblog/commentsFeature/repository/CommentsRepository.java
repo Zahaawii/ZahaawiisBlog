@@ -1,6 +1,5 @@
 package com.example.zahaawiiblog.commentsFeature.repository;
 
-import com.example.zahaawiiblog.commentsFeature.DTO.CommentsDTO;
 import com.example.zahaawiiblog.commentsFeature.entity.Comments;
 import org.springframework.data.jpa.repository.JpaRepository;
 

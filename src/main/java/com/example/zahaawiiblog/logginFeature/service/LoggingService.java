@@ -25,7 +25,4 @@ public class LoggingService {
         loggingRepository.save(logging);
     }
 
-    public void createPostFail() {
-
-    }
 }

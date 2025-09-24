@@ -3,7 +3,6 @@ package com.example.zahaawiiblog.controller;
 
 import com.example.zahaawiiblog.DTO.BlogDTO;
 import com.example.zahaawiiblog.DTO.CreateBlogDto;
-import com.example.zahaawiiblog.DTO.UpdateBlogDTO;
 import com.example.zahaawiiblog.entity.Blog;
 import com.example.zahaawiiblog.logginFeature.service.LoggingService;
 import com.example.zahaawiiblog.securityFeature.Entity.UserInfo;

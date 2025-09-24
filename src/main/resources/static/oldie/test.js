@@ -83,7 +83,7 @@
                 .catch(error => console.log(error))
         });
         alert("Blog post created")
-    };
+    }
 
 
 /*

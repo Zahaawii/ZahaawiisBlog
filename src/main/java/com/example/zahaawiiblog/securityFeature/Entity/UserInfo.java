@@ -2,7 +2,6 @@ package com.example.zahaawiiblog.securityFeature.Entity;
 
 
 import com.example.zahaawiiblog.entity.Blog;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

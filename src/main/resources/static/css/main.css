@@ -61,7 +61,6 @@ a {
 
 .login {
     display: flex;
-    align-items: left;
     gap: 8px;
 }
 
