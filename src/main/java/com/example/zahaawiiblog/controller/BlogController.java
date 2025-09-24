@@ -64,6 +64,9 @@ public class BlogController {
     @DeleteMapping("/deletepost/{id}")
     public ResponseEntity<?> removeBlog(@PathVariable Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth == null || !auth.isAuthenticated()) {
+            return new ResponseEntity<>("User not authenticade", HttpStatus.BAD_REQUEST);
+        }
         Optional<UserInfo> info = userService.findUserByUsername(auth.getName());
         if(blogService.findById(id).isEmpty()) {
             loggingService.log(4L,auth.getName() + " :tried to delete blog post: " + id + "but failed", info.get().getName(), 4L);
