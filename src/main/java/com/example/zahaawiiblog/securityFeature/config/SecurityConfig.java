@@ -61,6 +61,7 @@ public class SecurityConfig {
                                 "/api/v1/users/auth/login",
                                 "/api/v1/users/getuserbyname/**",
                                 "/api/v1/blog/getbyid/**",
+                                "/api/v1/users/createuser",
                                 "/api/v1/blog/getbyusername/**",
                                 "/api/v1/blog/getallblogpost",
                                 "/api/status/healthz")
