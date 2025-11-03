@@ -58,7 +58,10 @@ public class UserController {
     }
 
     @PostMapping("/createuser")
-    public ResponseEntity<AuthResponseDTO> createUser(@RequestBody SignupRequest req) {
+    public ResponseEntity<?> createUser(@RequestBody SignupRequest req) {
+        if(userService.findUserByUsername(req.name()).isPresent()) {
+            return new ResponseEntity<>("Username already exist", HttpStatus.BAD_REQUEST);
+        }
         UserInfo u = new UserInfo(null, req.name(), req.email(),
                 req.password(),Date.valueOf(LocalDate.now()) ,
                 "USER", null, null);
