@@ -20,7 +20,7 @@ public class ZahaawiiBlogApplication {
         return args -> {
 
             userService.createNewUser(
-                    new UserInfo(null, "Zahaawii", "Zahaa@123.dk", "Zahaa123", null, "ROLE_ADMIN", "Zahaawii.jpeg", null)
+                    new UserInfo(null, "Zahaawii", "Zahaa@123.dk", "$2a$12$L7ZnNF7IQg07rihKNrrdTOkDRadbbjczzqOOY1QcF0rqcAVwUm6he", null, "ROLE_ADMIN", "Zahaawii.jpeg", null)
             );
 
         };
