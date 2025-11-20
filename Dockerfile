@@ -5,7 +5,7 @@ COPY pom.xml .
 RUN mvn dependency:resolve
 
 COPY src ./src
-RUN mvn clean package -DskipTest
+RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:24-jdk-alpine
 
